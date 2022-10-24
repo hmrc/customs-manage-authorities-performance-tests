@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,28 +29,29 @@ trait ManageAuthoritiesRequests {
 
   def dateToMap(date: LocalDate): Map[String, String] = {
     Map(
-      "value.day" -> date.getDayOfMonth,
-      "value.month" -> date.getMonthValue,
-      "value.year" -> date.getYear
-    ).mapValues(_.toString)
+      "value.day" -> s"${date.getDayOfMonth}",
+      "value.month" -> s"${date.getMonthValue}",
+      "value.year" -> s"${date.getYear}"
+    )
   }
 
   private val authorisedUserPayload: Map[String, String] = Map(
     "fullName" -> "name",
-    "jobRole" -> "job",
-    "confirmation" -> "true"
+    "jobRole" -> "job"
   )
 
 
   setup("add-journey", "Add journey") withRequests(
-    getPage("Accounts page", saveToken = true, s"$baseUrl/add-authority/accounts"),
-    postPage("Accounts Page", s"$baseUrl/add-authority/accounts", s"$baseUrl/add-authority/eori-number", Map("value[0]" -> "account_0")),
-    postPage("EORI number Page", s"$baseUrl/add-authority/eori-number", s"$baseUrl/add-authority/start", "GB345834921000"),
+    getPage("EORI number page", saveToken = true, s"$baseUrl/add-authority/eori-number"),
+    postPage("EORI number Page", s"$baseUrl/add-authority/eori-number", s"$baseUrl/add-authority/accounts", "GB345834921000"),
+    postPage("Accounts Page", s"$baseUrl/add-authority/accounts", s"$baseUrl/add-authority/eori-details-correct", Map("value[0]" -> "account_0")),
+    postPage("EORI details correct page", s"$baseUrl/add-authority/eori-details-correct", s"$baseUrl/add-authority/start", "radioYes"),
     postPage("Start page", s"$baseUrl/add-authority/start", s"$baseUrl/add-authority/start-date", "setDate"),
-    postPage("Start date Page", s"$baseUrl/add-authority/start-date", s"$baseUrl/add-authority/end", dateToMap(LocalDate.now().plusDays(1))),
+    postPage("Start date Page", s"$baseUrl/add-authority/start-date", s"$baseUrl/add-authority/end", dateToMap(LocalDate.of(2028,10,10))),
     postPage("End page", s"$baseUrl/add-authority/end", s"$baseUrl/add-authority/end-date", "setDate"),
-    postPage("End date page", s"$baseUrl/add-authority/end-date", s"$baseUrl/add-authority/available-balance", dateToMap(LocalDate.now().plusDays(2))),
-    postPage("Available balance page", s"$baseUrl/add-authority/available-balance", s"$baseUrl/add-authority/check-answers", "yes"),
-    postPage("Check your answers page", s"$baseUrl/add-authority/check-answers", s"$baseUrl/add-authority/confirmation", authorisedUserPayload)
-  )
+    postPage("End date page", s"$baseUrl/add-authority/end-date", s"$baseUrl/add-authority/available-balance", dateToMap(LocalDate.of(2028,11,10))),
+    postPage("Available balance page", s"$baseUrl/add-authority/available-balance", s"$baseUrl/add-authority/your-details", "yes"),
+    postPage("Your details page", s"$baseUrl/add-authority/your-details", s"$baseUrl/add-authority/check-answers", authorisedUserPayload),
+    postPage("Check your answers page", s"$baseUrl/add-authority/check-answers", s"$baseUrl/add-authority/confirmation", "")
+ )
 }

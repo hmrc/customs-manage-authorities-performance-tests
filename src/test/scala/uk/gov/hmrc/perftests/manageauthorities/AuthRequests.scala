@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 HM Revenue & Customs
+ * Copyright 2022 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ trait AuthRequests {
 
   val loginStubPayload = Map(
     "authorityId" -> "",
-    "redirectionUrl" -> (baseUrl + "/add-authority/accounts"),
+    "redirectionUrl" -> baseUrl,
     "credentialStrength" -> "weak",
     "confidenceLevel" -> "50",
     "affinityGroup" -> "Organisation",
@@ -40,7 +40,7 @@ trait AuthRequests {
 
   setup("login", "Login") withRequests(
     getPage("Auth Page", authUrl),
-    postPage("Post Auth Page", postToken = false, authUrl, s"$baseUrl/add-authority/accounts", loginStubPayload)
+    postPage("Post Auth Page", postToken = false, authUrl, s"$baseUrl/manage-account-authorities", loginStubPayload)
   )
 
 
