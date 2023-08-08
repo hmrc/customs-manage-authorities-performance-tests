@@ -49,7 +49,11 @@ object Requests {
     postPage(stepName, postToken = true, currentPage, nextPage, values)
   }
 
-  def postPage(stepName: String, postToken: Boolean, currentPage: String, nextPage: String, values: Map[String, String]): HttpRequestBuilder = {
+  def postPage(stepName: String,
+               postToken: Boolean,
+               currentPage: String,
+               nextPage: String,
+               values: Map[String, String]): HttpRequestBuilder = {
     http(_ => "Post " + stepName)
       .post(currentPage)
       .formParamMap(
@@ -62,5 +66,4 @@ object Requests {
       .check(status.is(200))
       .check(currentLocation.is(nextPage))
   }
-
 }
