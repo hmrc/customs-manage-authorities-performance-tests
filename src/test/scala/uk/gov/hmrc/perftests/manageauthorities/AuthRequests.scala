@@ -26,7 +26,7 @@ trait AuthRequests {
   private val authUrl: String = baseUrlFor("auth-login-stub") + "/auth-login-stub/gg-sign-in"
   private val baseUrl: String = baseUrlFor("customs-manage-authorities-frontend") + "/customs/manage-authorities"
 
-  val loginStubPayload = Map(
+  val loginStubPayload: Map[String, String] = Map(
     "authorityId" -> "",
     "redirectionUrl" -> baseUrl,
     "credentialStrength" -> "weak",
@@ -38,10 +38,12 @@ trait AuthRequests {
     "enrolment[0].taxIdentifier[0].value" -> "GB744638982000"
   )
 
-  setup("login", "Login") withRequests(
-    getPage("Auth Page", authUrl),
-    postPage("Post Auth Page", postToken = false, authUrl, s"$baseUrl/manage-account-authorities", loginStubPayload)
-  )
-
-
+  setup("login", "Login") withRequests (
+    List(
+      getPage("Auth Page", authUrl),
+      postPage("Post Auth Page",
+        postToken = false,
+        authUrl,
+        s"$baseUrl/manage-account-authorities", loginStubPayload)
+    ): _*)
 }

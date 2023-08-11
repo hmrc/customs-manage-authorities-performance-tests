@@ -18,6 +18,7 @@ package uk.gov.hmrc.perftests.manageauthorities
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
+import io.gatling.http.protocol.HttpProtocolBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
 import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
 
@@ -27,7 +28,7 @@ class ManageAuthoritiesSimulation extends PerformanceTestRunner
   with ManageAuthoritiesRequests {
 
   // Override to enable follow redirects
-  override val httpProtocol = http
+  override val httpProtocol: HttpProtocolBuilder = http
     .acceptHeader("image/png,image/*;q=0.8,*/*;q=0.5")
     .acceptEncodingHeader("gzip, deflate")
     .acceptLanguageHeader("en-gb,en;q=0.5")
