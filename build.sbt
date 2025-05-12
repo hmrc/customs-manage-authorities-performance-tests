@@ -1,6 +1,5 @@
 lazy val root = (project in file("."))
   .enablePlugins(GatlingPlugin)
-  .enablePlugins(SbtAutoBuildPlugin)
   .settings(
     name := "customs-manage-authorities-performance-tests",
     version := "0.1.0-SNAPSHOT",
