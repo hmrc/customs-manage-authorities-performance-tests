@@ -29,31 +29,41 @@ object Requests {
       .check(currentLocation.is(url))
     if (saveToken) {
       httpRequestBuilder.check(css("input[name='csrfToken']", "value").saveAs("csrfToken"))
-    }
-    else {
+    } else {
       httpRequestBuilder
     }
   }
 
-  def getPage(stepName: String, url: String): HttpRequestBuilder = {
+  def getPage(stepName: String, url: String): HttpRequestBuilder =
     getPage(stepName, saveToken = false, url)
-  }
 
   def postPage(stepName: String, currentPage: String, nextPage: String, value: String): HttpRequestBuilder =
     postPage(stepName, postToken = true, currentPage, nextPage, value)
 
-  def postPage(stepName: String, postToken: Boolean, currentPage: String, nextPage: String, value: String): HttpRequestBuilder =
+  def postPage(
+    stepName: String,
+    postToken: Boolean,
+    currentPage: String,
+    nextPage: String,
+    value: String
+  ): HttpRequestBuilder =
     postPage(stepName, postToken, currentPage, nextPage, Map("value" -> value))
 
-  def postPage(stepName: String, currentPage: String, nextPage: String, values: Map[String, String]): HttpRequestBuilder = {
+  def postPage(
+    stepName: String,
+    currentPage: String,
+    nextPage: String,
+    values: Map[String, String]
+  ): HttpRequestBuilder =
     postPage(stepName, postToken = true, currentPage, nextPage, values)
-  }
 
-  def postPage(stepName: String,
-               postToken: Boolean,
-               currentPage: String,
-               nextPage: String,
-               values: Map[String, String]): HttpRequestBuilder = {
+  def postPage(
+    stepName: String,
+    postToken: Boolean,
+    currentPage: String,
+    nextPage: String,
+    values: Map[String, String]
+  ): HttpRequestBuilder =
     http(_ => "Post " + stepName)
       .post(currentPage)
       .formParamMap(
@@ -65,5 +75,4 @@ object Requests {
       )
       .check(status.is(200))
       .check(currentLocation.is(nextPage))
-  }
 }

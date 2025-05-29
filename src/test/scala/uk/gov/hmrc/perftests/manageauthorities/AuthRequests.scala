@@ -27,23 +27,19 @@ trait AuthRequests {
   private val baseUrl: String = baseUrlFor("customs-manage-authorities-frontend") + "/customs/manage-authorities"
 
   val loginStubPayload: Map[String, String] = Map(
-    "authorityId" -> "",
-    "redirectionUrl" -> baseUrl,
-    "credentialStrength" -> "strong",
-    "confidenceLevel" -> "50",
-    "affinityGroup" -> "Organisation",
-    "enrolment[0].state" -> "Activated",
-    "enrolment[0].name" -> "HMRC-CUS-ORG",
-    "enrolment[0].taxIdentifier[0].name" -> "EORINumber",
+    "authorityId"                         -> "",
+    "redirectionUrl"                      -> baseUrl,
+    "credentialStrength"                  -> "strong",
+    "confidenceLevel"                     -> "50",
+    "affinityGroup"                       -> "Organisation",
+    "enrolment[0].state"                  -> "Activated",
+    "enrolment[0].name"                   -> "HMRC-CUS-ORG",
+    "enrolment[0].taxIdentifier[0].name"  -> "EORINumber",
     "enrolment[0].taxIdentifier[0].value" -> "GB744638982000"
   )
 
-  setup("login", "Login") withRequests (
-    List(
-      getPage("Auth Page", authUrl),
-      postPage("Post Auth Page",
-        postToken = false,
-        authUrl,
-        s"$baseUrl/manage-account-authorities", loginStubPayload)
-    ): _*)
+  setup("login", "Login") withRequests (List(
+    getPage("Auth Page", authUrl),
+    postPage("Post Auth Page", postToken = false, authUrl, s"$baseUrl/manage-account-authorities", loginStubPayload)
+  ): _*)
 }

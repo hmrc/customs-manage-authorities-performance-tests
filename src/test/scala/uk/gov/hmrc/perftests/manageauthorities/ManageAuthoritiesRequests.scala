@@ -29,27 +29,67 @@ trait ManageAuthoritiesRequests {
     baseUrlFor("customs-manage-authorities-frontend") + "/customs/manage-authorities"
 
   def dateToMap(date: LocalDate): Map[String, String] = Map(
-    "value.day" -> s"${date.getDayOfMonth}",
+    "value.day"   -> s"${date.getDayOfMonth}",
     "value.month" -> s"${date.getMonthValue}",
-    "value.year" -> s"${date.getYear}"
+    "value.year"  -> s"${date.getYear}"
   )
 
   private val authorisedUserPayload: Map[String, String] = Map(
     "fullName" -> "name",
-    "jobRole" -> "job"
+    "jobRole"  -> "job"
   )
 
-  setup("add-journey", "Add journey") withRequests (
-    List(getPage("EORI number page", saveToken = true, s"$baseUrl/add-authority/eori-number"),
-      postPage("EORI number Page", s"$baseUrl/add-authority/eori-number", s"$baseUrl/add-authority/eori-details-correct", "GB345834921000"),
-      postPage("EORI details correct page", s"$baseUrl/add-authority/eori-details-correct", s"$baseUrl/add-authority/accounts", "radioYes"),
-      postPage("Accounts Page", s"$baseUrl/add-authority/accounts", s"$baseUrl/add-authority/start", Map("value[0]" -> "account_0")),
-      postPage("Start page", s"$baseUrl/add-authority/start", s"$baseUrl/add-authority/start-date", "setDate"),
-      postPage("Start date Page", s"$baseUrl/add-authority/start-date", s"$baseUrl/add-authority/end", dateToMap(LocalDate.of(2028, 10, 10))),
-      postPage("End page", s"$baseUrl/add-authority/end", s"$baseUrl/add-authority/end-date", "setDate"),
-      postPage("End date page", s"$baseUrl/add-authority/end-date", s"$baseUrl/add-authority/available-balance", dateToMap(LocalDate.of(2028, 11, 10))),
-      postPage("Available balance page", s"$baseUrl/add-authority/available-balance", s"$baseUrl/add-authority/your-details", "yes"),
-      postPage("Your details page", s"$baseUrl/add-authority/your-details", s"$baseUrl/add-authority/check-answers", authorisedUserPayload),
-      postPage("Check your answers page", s"$baseUrl/add-authority/check-answers", s"$baseUrl/add-authority/confirmation", "")
-    ): _*)
+  setup("add-journey", "Add journey") withRequests (List(
+    getPage("EORI number page", saveToken = true, s"$baseUrl/add-authority/eori-number"),
+    postPage(
+      "EORI number Page",
+      s"$baseUrl/add-authority/eori-number",
+      s"$baseUrl/add-authority/eori-details-correct",
+      "GB345834921000"
+    ),
+    postPage(
+      "EORI details correct page",
+      s"$baseUrl/add-authority/eori-details-correct",
+      s"$baseUrl/add-authority/accounts",
+      "radioYes"
+    ),
+    postPage(
+      "Accounts Page",
+      s"$baseUrl/add-authority/accounts",
+      s"$baseUrl/add-authority/start",
+      Map("value[0]" -> "account_0")
+    ),
+    postPage("Start page", s"$baseUrl/add-authority/start", s"$baseUrl/add-authority/start-date", "setDate"),
+    postPage(
+      "Start date Page",
+      s"$baseUrl/add-authority/start-date",
+      s"$baseUrl/add-authority/end",
+      dateToMap(LocalDate.of(2028, 10, 10))
+    ),
+    postPage("End page", s"$baseUrl/add-authority/end", s"$baseUrl/add-authority/end-date", "setDate"),
+    postPage(
+      "End date page",
+      s"$baseUrl/add-authority/end-date",
+      s"$baseUrl/add-authority/available-balance",
+      dateToMap(LocalDate.of(2028, 11, 10))
+    ),
+    postPage(
+      "Available balance page",
+      s"$baseUrl/add-authority/available-balance",
+      s"$baseUrl/add-authority/your-details",
+      "yes"
+    ),
+    postPage(
+      "Your details page",
+      s"$baseUrl/add-authority/your-details",
+      s"$baseUrl/add-authority/check-answers",
+      authorisedUserPayload
+    ),
+    postPage(
+      "Check your answers page",
+      s"$baseUrl/add-authority/check-answers",
+      s"$baseUrl/add-authority/confirmation",
+      ""
+    )
+  ): _*)
 }

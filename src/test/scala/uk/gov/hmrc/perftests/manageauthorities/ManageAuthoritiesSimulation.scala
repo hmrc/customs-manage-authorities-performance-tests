@@ -22,10 +22,11 @@ import io.gatling.http.protocol.HttpProtocolBuilder
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
 import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
 
-class ManageAuthoritiesSimulation extends PerformanceTestRunner
-  with ServicesConfiguration
-  with AuthRequests
-  with ManageAuthoritiesRequests {
+class ManageAuthoritiesSimulation
+    extends PerformanceTestRunner
+    with ServicesConfiguration
+    with AuthRequests
+    with ManageAuthoritiesRequests {
 
   // Override to enable follow redirects
   override val httpProtocol: HttpProtocolBuilder = http
